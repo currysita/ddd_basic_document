@@ -1,0 +1,63 @@
+name: 学習進捗通知
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '問題集/進捗/**'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Issue にコメントを投稿
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { execSync } = require('child_process');
+
+            const commitMsg = execSync('git log -1 --pretty=%s').toString().trim();
+            const commitSha = execSync('git log -1 --pretty=%h').toString().trim();
+            const commitUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/commit/${context.sha}`;
+
+            const diff = execSync('git diff HEAD~1 HEAD -- "問題集/進捗/"').toString();
+
+            // 変更行（+で始まる進捗行）を抽出
+            const lines = diff.split('\n')
+              .filter(l => l.startsWith('+') && l.includes('|') && !l.startsWith('+++'))
+              .filter(l => /\|\s*(正解|部分正解|自信なし|不正解|未回答)/.test(l))
+              .map(l => l.replace(/^\+/, '').trim());
+
+            const table = lines.length > 0
+              ? `| 問題ID | 結果 | メモ |\n|--------|------|------|\n` + lines.map(l => {
+                  const cols = l.split('|').map(c => c.trim()).filter(Boolean);
+                  return `| ${cols[0]} | ${cols[4]} | ${cols[5] || ''} |`;
+                }).join('\n')
+              : '（差分の取得に失敗しました）';
+
+            const body = [
+              `## 📚 DDD学習進捗が更新されました`,
+              ``,
+              `**コミット：** [\`${commitSha}\`](${commitUrl})`,
+              `**内容：** ${commitMsg}`,
+              ``,
+              `### 更新された問題`,
+              table,
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: 2,
+              body: body
+            });
