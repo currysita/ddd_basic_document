@@ -11,6 +11,8 @@
 ddd_basic_document/
 ├── .claude/skills/
 │   ├── quiz-authoring/      # 問題集の作成・改訂・レビュー・出題運用（project.mdが固有設定）
+│   ├── quiz-improvement-workflow/  # 問題集の改善手順（レビュー→1問ずつ修正→同期）と整合性チェック
+│   ├── quiz-answerability-review/  # 答えづらさの10観点レビュー（読み取り専用）
 │   └── term-note-authoring/ # 用語集・用語ノートの作成（project.mdが固有設定）
 ├── 第01章〜第14章_*/        # 各章のまとめ・問題集（章ごとのフォルダ）
 │   ├── 第XX章まとめ.md      # 章の要点まとめ
@@ -65,7 +67,12 @@ ddd_basic_document/
 
 問題集の新規作成・改訂・出題運用・レビューは `.claude/skills/quiz-authoring/SKILL.md` に従う。このプロジェクト固有の設定（記述式中心、習熟レベル、ファイル配置、書式ルールなど）は同フォルダの `project.md` にあり、SKILL.mdより優先される。
 
-このskillは問題集作成キット（原本: `C:\Users\YasudaTadashi\Documents\資格試験\DP-300\問題集作成キット\`、参考コピー: `他プロジェクトの参考資料/`）から導入したもの。どの問題集にも通じる教訓が見つかったら、原本への反映候補としてユーザーに伝える。
+既存の問題集の見直し・改善は次の2つのskillで行う。
+
+- `.claude/skills/quiz-improvement-workflow/`：レビュー→1問ずつ修正→進捗ファイル等の同期→ユーザー確認、の手順（オーケストレーション）。整合性チェックのスクリプトを含む
+- `.claude/skills/quiz-answerability-review/`：「答えづらくないか」を10観点（R1〜R10）で点検する読み取り専用のレビュー
+
+quiz-authoringは問題集作成キット（原本: `C:\Users\YasudaTadashi\Documents\資格試験\DP-300\問題集作成キット\`、参考コピー: `他プロジェクトの参考資料/`）から導入したもの。どの問題集にも通じる教訓が見つかったら、原本への反映候補としてユーザーに伝える。
 
 用語集・用語ノートの作成は `.claude/skills/term-note-authoring/SKILL.md` に従う（固有設定は同フォルダの `project.md`）。
 
