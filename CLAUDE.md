@@ -69,7 +69,7 @@ ddd_basic_document/
 
 ## 問題集作成のルール
 
-問題集の新規作成・改訂・出題運用・レビューは `.claude/skills/quiz-authoring/SKILL.md` に従う。このプロジェクト固有の設定（記述式中心、習熟レベル、ファイル配置、書式ルールなど）は同フォルダの `project.md` にあり、SKILL.mdより優先される。
+問題集の新規作成・改訂・出題運用・レビューは `.claude/skills/quiz-authoring/SKILL.md` に従う。このプロジェクト固有の設定（解答方法は制限しない、習熟レベル、ファイル配置、書式ルールなど）は同フォルダの `project.md` にあり、SKILL.mdより優先される。
 
 既存の問題集の見直し・改善は次の2つのskillで行う。
 
